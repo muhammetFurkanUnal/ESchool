@@ -5,16 +5,22 @@ from typing import Optional, Dict, List, Any
 import os
 
 class Database:
-    def __init__(self):
+    def __init__(self, insert:bool):
         
-        filename = "database_setup.sql"
+        setup_db = "database_setup.sql"
+        sample_insert_db = "database_sample_insertion.sql"
+        
         base_path = os.path.dirname(os.path.abspath(__file__))
-        full_path = os.path.join(base_path, filename)
+        setup_full_path = os.path.join(base_path, setup_db)
+        sample_insert_full_path = os.path.join(base_path, sample_insert_db)
         
         connected = self.connect()
         if not connected:
             raise Error("Can not connected to database")
-        self.run_sql_file(full_path)
+        
+        self.run_sql_file(setup_full_path)
+        if insert:
+            self.run_sql_file(sample_insert_full_path)
     
     
     def connect(self):
@@ -50,10 +56,11 @@ class Database:
                 result = cursor.fetchall()
                 cursor.close()
                 return result
-            else:
+            else: 
                 self.connection.commit()
+                last_id = cursor.lastrowid  # only nonzero when query is INSERT
                 cursor.close()
-                return None
+                return last_id
                 
         except Error as e:
             print(f"Query execution error: {e}")
@@ -95,7 +102,8 @@ class Database:
                 
                 
                 
-db = Database()
+db = Database(insert=False)
+
 
 
 

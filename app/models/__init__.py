@@ -1,1 +1,3 @@
-from .student_model import Student
+from .student_model import *
+from .model_utils import *
+from .generic_models import *
