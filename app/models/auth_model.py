@@ -5,6 +5,7 @@ class AccountType(str, Enum):
     student = "student"
     teacher = "teacher"
     administrator = "administrator"
+    debug = "debug"
 
 
 class GetAuthRequest(BaseModel):

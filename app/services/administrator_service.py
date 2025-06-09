@@ -1,4 +1,5 @@
 from ..repo import AdministratorRepo
+from ..auth import hash_password
 
 
 class AdministratorService:
@@ -14,6 +15,7 @@ class AdministratorService:
         return administrators
 
     def add_administrator(self, administrator_data):
+        administrator_data.password = hash_password(administrator_data.password)
         administrator = self.administrator_repo.add_administrator(administrator_data)
         return administrator
 

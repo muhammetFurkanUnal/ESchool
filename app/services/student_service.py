@@ -1,4 +1,5 @@
 from ..repo import StudentRepo
+from ..auth import hash_password
 # from ..models.model_utils import *
 
 class StudentService:
@@ -18,6 +19,7 @@ class StudentService:
         return students
 
     def add_student(self, student_data):
+        student_data.password = hash_password(student_data.password)
         student = self.student_repo.add_student(student_data)
         return student
 

@@ -1,4 +1,5 @@
 from ..repo import TeacherRepo
+from ..auth import hash_password
 
 
 class TeacherService:
@@ -14,6 +15,7 @@ class TeacherService:
         return teachers
 
     def add_teacher(self, teacher_data):
+        teacher_data.password = hash_password(teacher_data.password)
         teacher = self.teacher_repo.add_teacher(teacher_data)
         return teacher
 
