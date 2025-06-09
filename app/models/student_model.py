@@ -23,3 +23,6 @@ class UpdateStudentRequest(BaseModel):
 
 class DeleteStudentRequest(BaseModel):
     account_id: int
+    
+    
+    

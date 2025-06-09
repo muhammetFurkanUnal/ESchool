@@ -9,7 +9,8 @@ from .routers import (
     warning_router, 
     schedule_router,
     take_router,
-    teach_router
+    teach_router,
+    auth_router
 )
 from .database import db
 
@@ -24,4 +25,4 @@ app.include_router(warning_router)
 app.include_router(schedule_router)
 app.include_router(take_router)
 app.include_router(teach_router)
-
+app.include_router(auth_router)

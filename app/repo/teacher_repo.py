@@ -33,6 +33,17 @@ class TeacherRepo:
         return teacher
     
     
+    def get_teacher_by_username(self, username):
+        query = TeacherQueries.get_by_username(username)
+        teacher_raw = db.execute_query(query)
+        
+        if len(teacher_raw) == 0:
+            return None
+        
+        teacher = raw_to_model(teacher_raw, Teacher)[0]
+        return teacher
+    
+    
     def add_teacher(self, model: CreateTeacherRequest):
         query = TeacherQueries.create_teacher(model)
         new_teacher_id = db.execute_query(query)

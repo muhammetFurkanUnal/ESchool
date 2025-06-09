@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from ..services import DepartmentService
 from ..models import *
 from ..models.generic_models import *
+from ..auth import require_role
 
 department_service = DepartmentService()
 
@@ -30,7 +31,10 @@ def get_department_by_id(id: int):
     
     
 @department_router.post("/department", response_model=CreateSuccessResponse)
-def add_department(department_request: CreateDepartmentRequest):
+def add_department(
+        department_request: CreateDepartmentRequest, 
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
     department = department_service.add_department(department_request)
     return CreateSuccessResponse(
         message="Department added successfully!",
@@ -39,7 +43,11 @@ def add_department(department_request: CreateDepartmentRequest):
     
     
 @department_router.put("/department/{id}", response_model=UpdateSuccessResponse)
-def update_department(department_request: UpdateDepartmentRequest, id: int):
+def update_department(
+        department_request: UpdateDepartmentRequest,
+        id: int,
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
     department = department_service.update_department(department_request, id)
     return UpdateSuccessResponse(
         message="Department updated successfully!",
@@ -48,9 +56,12 @@ def update_department(department_request: UpdateDepartmentRequest, id: int):
     
     
 @department_router.delete("/department", response_model=DeleteSuccessResponse)
-def delete_department(department_request: DeleteDepartmentRequest):
+def delete_department(
+        department_request: DeleteDepartmentRequest,
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
     department = department_service.delete_department(department_request)
     return DeleteSuccessResponse(
         message="Department deleted successfully!",
         model=department
-    ) 
+    )

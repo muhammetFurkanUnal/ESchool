@@ -1,14 +1,17 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from ..services import AdministratorService
 from ..models import *
 from ..models.generic_models import *
+from ..auth import require_role
 
 administrator_service = AdministratorService()
 
 administrator_router = APIRouter(prefix="/api")
 
 @administrator_router.get("/administrators", response_model=GetSuccessResposne)
-def get_all_administrators():
+def get_all_administrators(
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     response = administrator_service.get_all_administrators()
     return GetSuccessResposne(
         message="Get all administrators successful!",
@@ -17,7 +20,10 @@ def get_all_administrators():
     
 
 @administrator_router.get("/administrator/{id}", response_model=GetSuccessResposne)
-def get_administrator_by_account_id(id):
+def get_administrator_by_account_id(
+        id, 
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     response = administrator_service.get_administrator_by_account_id(id)
     
     if response is None:
@@ -31,7 +37,10 @@ def get_administrator_by_account_id(id):
     
     
 @administrator_router.post("/administrator", response_model=CreateSuccessResponse)
-def add_administrator(administrator_request: CreateAdministratorRequest):
+def add_administrator(
+        administrator_request: CreateAdministratorRequest, 
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     administrator = administrator_service.add_administrator(administrator_request)
     return CreateSuccessResponse(
         message="Administrator added successfully!",
@@ -41,7 +50,11 @@ def add_administrator(administrator_request: CreateAdministratorRequest):
     
     
 @administrator_router.put("/administrator/{id}", response_model=UpdateSuccessResponse)
-def update_administrator(administrator_request: UpdateAdministratorRequest, id):
+def update_administrator(
+        administrator_request: UpdateAdministratorRequest, 
+        id, 
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     administrator = administrator_service.update_administrator(administrator_request, id)
     return UpdateSuccessResponse(
         message="Administrator updated successfully!",
@@ -50,7 +63,10 @@ def update_administrator(administrator_request: UpdateAdministratorRequest, id):
     
     
 @administrator_router.delete("/administrator", response_model=DeleteSuccessResponse)
-def delete_administrator(administrator_request: DeleteAdministratorRequest):
+def delete_administrator(
+        administrator_request: DeleteAdministratorRequest, 
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     administrator = administrator_service.delete_administrator(administrator_request)
     return DeleteSuccessResponse(
         message="Administrator deleted successfully!",

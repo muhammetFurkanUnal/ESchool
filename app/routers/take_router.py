@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from ..services import TakeService
 from ..models.take_model import *
 from ..models.generic_models import *
+from ..models import AccountType
+from ..auth import verify_token, require_role
 
 take_service = TakeService()
 
@@ -9,7 +11,7 @@ take_router = APIRouter(prefix="/api")
 
 
 @take_router.get("/takes", response_model=GetSuccessResposne)
-def get_all_takes():
+def get_all_takes(user=Depends(verify_token)):
     response = take_service.get_all_takes()
     return GetSuccessResposne(
         message="Get all takes successful!",
@@ -18,7 +20,10 @@ def get_all_takes():
 
 
 @take_router.get("/take/{student_id}/{lecture_id}", response_model=GetSuccessResposne)
-def get_take_by_student_and_lecture_id(student_id: int, lecture_id: int):
+def get_take_by_student_and_lecture_id(
+        student_id: int, lecture_id: int, 
+        user=Depends(verify_token)
+    ):
     response = take_service.get_take_by_student_and_lecture_id(student_id, lecture_id)
 
     if response is None:
@@ -31,7 +36,10 @@ def get_take_by_student_and_lecture_id(student_id: int, lecture_id: int):
 
 
 @take_router.post("/take", response_model=CreateSuccessResponse)
-def add_take(take_request: CreateTakeRequest):
+def add_take(
+        take_request: CreateTakeRequest,
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
     take = take_service.add_take(take_request)
     return CreateSuccessResponse(
         message="Take record added successfully!",
@@ -40,7 +48,12 @@ def add_take(take_request: CreateTakeRequest):
 
 
 @take_router.put("/take/{student_id}/{lecture_id}", response_model=UpdateSuccessResponse)
-def update_take(take_request: UpdateTakeRequest, student_id: int, lecture_id: int):
+def update_take(
+        take_request: UpdateTakeRequest,
+        student_id: int,
+        lecture_id: int,
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
     updated_take = take_service.update_take(take_request, student_id, lecture_id)
     return UpdateSuccessResponse(
         message="Take record updated successfully!",
@@ -49,7 +62,10 @@ def update_take(take_request: UpdateTakeRequest, student_id: int, lecture_id: in
 
 
 @take_router.delete("/take", response_model=DeleteSuccessResponse)
-def delete_take(take_request: DeleteTakeRequest):
+def delete_take(
+        take_request: DeleteTakeRequest,
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
     deleted_take = take_service.delete_take(take_request)
     return DeleteSuccessResponse(
         message="Take record deleted successfully!",

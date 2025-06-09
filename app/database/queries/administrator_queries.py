@@ -9,6 +9,9 @@ class AdministratorQueries:
     def get_by_account_id(account_id: int):
         return f"SELECT * FROM Administrator WHERE account_id={account_id}"
 
+    def get_by_username(username: str):
+        return f"SELECT * FROM Administrator WHERE username='{username}'"
+
 
     def create_administrator(administrator: CreateAdministratorRequest):
         return f"""

@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from ..services import LectureService
 from ..models import *
 from ..models.generic_models import *
+from ..auth import require_role
 
 lecture_service = LectureService()
 
@@ -30,7 +31,10 @@ def get_lecture_by_id(id):
     
     
 @lecture_router.post("/lecture", response_model=CreateSuccessResponse)
-def add_lecture(lecture_request: CreateLectureRequest):
+def add_lecture(
+        lecture_request: CreateLectureRequest,
+        user=Depends(require_role([AccountType.administrator, AccountType.teacher]))
+    ):
     lecture = lecture_service.add_lecture(lecture_request)
     return CreateSuccessResponse(
         message="Lecture added successfully!",
@@ -39,16 +43,22 @@ def add_lecture(lecture_request: CreateLectureRequest):
     
     
 @lecture_router.put("/lecture/{id}", response_model=UpdateSuccessResponse)
-def update_lecture(lecture_request: UpdateLectureRequest, id):
+def update_lecture(
+        lecture_request: UpdateLectureRequest,
+        id,
+        user=Depends(require_role([AccountType.administrator, AccountType.teacher]))
+    ):
     lecture = lecture_service.update_lecture(lecture_request, id)
     return UpdateSuccessResponse(
         message="Lecture updated successfully!",
         model=lecture
     )
 
-    
 @lecture_router.delete("/lecture", response_model=DeleteSuccessResponse)
-def delete_lecture(lecture_request: DeleteLectureRequest):
+def delete_lecture(
+        lecture_request: DeleteLectureRequest,
+        user=Depends(require_role([AccountType.administrator, AccountType.teacher]))
+    ):
     lecture = lecture_service.delete_lecture(lecture_request)
     return DeleteSuccessResponse(
         message="Lecture deleted successfully!",

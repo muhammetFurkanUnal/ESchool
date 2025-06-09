@@ -7,6 +7,10 @@ class TeacherQueries:
 
     def get_by_account_id(id: int):
         return f"SELECT * FROM Teacher WHERE account_id={id}"
+    
+    
+    def get_by_username(username: str):
+        return f"SELECT * FROM Teacher WHERE username='{username}'"
 
     def create_teacher(teacher: CreateTeacherRequest):
         return f"""

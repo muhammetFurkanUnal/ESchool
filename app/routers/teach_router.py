@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from ..services import TeachService
 from ..models.teach_model import *
 from ..models.generic_models import *
+from ..models import AccountType
+from ..auth import verify_token, require_role
+from ..models.auth_model import AccountType
 
 teach_service = TeachService()
 
@@ -9,7 +12,7 @@ teach_router = APIRouter(prefix="/api")
 
 
 @teach_router.get("/teaches", response_model=GetSuccessResposne)
-def get_all_teaches():
+def get_all_teaches(user=Depends(verify_token)):
     response = teach_service.get_all_teaches()
     return GetSuccessResposne(
         message="Get all teaches successful!",
@@ -18,7 +21,11 @@ def get_all_teaches():
 
 
 @teach_router.get("/teach/{teacher_id}/{lecture_id}", response_model=GetSuccessResposne)
-def get_teach_by_teacher_and_lecture_id(teacher_id: int, lecture_id: int):
+def get_teach_by_teacher_and_lecture_id(
+        teacher_id: int, 
+        lecture_id: int, 
+        user=Depends(verify_token)
+    ):
     response = teach_service.get_teach_by_teacher_and_lecture_id(teacher_id, lecture_id)
 
     if response is None:
@@ -31,7 +38,10 @@ def get_teach_by_teacher_and_lecture_id(teacher_id: int, lecture_id: int):
 
 
 @teach_router.post("/teach", response_model=CreateSuccessResponse)
-def add_teach(teach_request: CreateTeachRequest):
+def add_teach(
+        teach_request: CreateTeachRequest,
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     teach = teach_service.add_teach(teach_request)
     return CreateSuccessResponse(
         message="Teach record added successfully!",
@@ -40,7 +50,10 @@ def add_teach(teach_request: CreateTeachRequest):
 
 
 @teach_router.delete("/teach", response_model=DeleteSuccessResponse)
-def delete_teach(teach_request: DeleteTeachRequest):
+def delete_teach(
+        teach_request: DeleteTeachRequest,
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     deleted_teach = teach_service.delete_teach(teach_request)
     return DeleteSuccessResponse(
         message="Teach record deleted successfully!",

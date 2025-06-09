@@ -9,6 +9,10 @@ class StudentQueries:
     def get_by_account_id(id: int):
         return f"SELECT * FROM Student WHERE account_id={id}"
     
+    
+    def get_by_username(username: str):
+        return f"SELECT * FROM Student WHERE username='{username}'"
+    
     # def get_by_student_id(id: int):
     #     return f"SELECT * FROM Student WHERE student_id={id}"
     

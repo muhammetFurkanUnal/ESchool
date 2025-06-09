@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from ..services import TeacherService
 from ..models import *
 from ..models.generic_models import *
+from ..models import AccountType
+from ..auth import require_role
+from ..models.auth_model import AccountType
 
 teacher_service = TeacherService()
 teacher_router = APIRouter(prefix="/api")
@@ -28,7 +31,10 @@ def get_teacher_by_account_id(id):
     
     
 @teacher_router.post("/teacher", response_model=CreateSuccessResponse)
-def add_teacher(teacher_request: CreateTeacherRequest):
+def add_teacher(
+        teacher_request: CreateTeacherRequest,
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     teacher = teacher_service.add_teacher(teacher_request)
     return CreateSuccessResponse(
         message="Teacher added successfully!",
@@ -37,7 +43,11 @@ def add_teacher(teacher_request: CreateTeacherRequest):
     
     
 @teacher_router.put("/teacher/{id}", response_model=UpdateSuccessResponse)
-def update_teacher(teacher_request: UpdateTeacherRequest, id):
+def update_teacher(
+        teacher_request: UpdateTeacherRequest,
+        id,
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     teacher = teacher_service.update_teacher(teacher_request, id)
     return UpdateSuccessResponse(
         message="Teacher updated successfully!",
@@ -46,7 +56,10 @@ def update_teacher(teacher_request: UpdateTeacherRequest, id):
     
     
 @teacher_router.delete("/teacher", response_model=DeleteSuccessResponse)
-def delete_teacher(teacher_request: DeleteTeacherRequest):
+def delete_teacher(
+        teacher_request: DeleteTeacherRequest,
+        user=Depends(require_role([AccountType.administrator]))
+    ):
     teacher = teacher_service.delete_teacher(teacher_request)
     return DeleteSuccessResponse(
         message="Teacher deleted successfully!",

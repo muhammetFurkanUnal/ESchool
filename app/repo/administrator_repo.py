@@ -28,6 +28,17 @@ class AdministratorRepo:
         return administrator
     
     
+    def get_administrator_by_username(self, username):
+        query = AdministratorQueries.get_by_username(username)
+        administrator_raw = db.execute_query(query)
+        
+        if len(administrator_raw) == 0:
+            return None
+        
+        administrator = raw_to_model(administrator_raw, Administrator)[0]
+        return administrator
+    
+    
     def add_administrator(self, model: CreateAdministratorRequest):
         query = AdministratorQueries.create_administrator(model)
         new_administrator_id = db.execute_query(query)
