@@ -5,3 +5,4 @@ from .department_model import *
 from .teacher_model import *
 from .administrator_model import *
 from .lecture_model import *
+from .warning_model import *
