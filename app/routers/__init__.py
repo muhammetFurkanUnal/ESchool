@@ -5,3 +5,4 @@ from .teacher_router import teacher_router
 from .administrator_router import administrator_router
 from .lecture_router import lecture_router
 from .warning_router import warning_router
+from .schedule_router import schedule_router

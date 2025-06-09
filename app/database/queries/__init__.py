@@ -4,3 +4,4 @@ from .teacher_queries import TeacherQueries
 from .administrator_queries import AdministratorQueries
 from .lecture_queries import LectureQueries
 from .warning_queries import WarningQueries
+from .schedule_queries import ScheduleQueries
