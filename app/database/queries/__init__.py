@@ -1,1 +1,2 @@
 from .student_queries import StudentQueries
+from .department_queries import DepartmentQueries

@@ -1,4 +1,4 @@
-from ..models import *
+from ..models.student_model import *
 from ..database import db
 from ..database.queries.student_queries import StudentQueries
 from ..models.model_utils import *
