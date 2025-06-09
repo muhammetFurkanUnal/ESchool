@@ -8,3 +8,4 @@ from .lecture_model import *
 from .warning_model import *
 from .schedule_model import *
 from .take_model import *
+from .teach_model import *

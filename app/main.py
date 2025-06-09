@@ -8,7 +8,8 @@ from .routers import (
     lecture_router, 
     warning_router, 
     schedule_router,
-    take_router
+    take_router,
+    teach_router
 )
 from .database import db
 
@@ -22,4 +23,5 @@ app.include_router(lecture_router)
 app.include_router(warning_router)
 app.include_router(schedule_router)
 app.include_router(take_router)
+app.include_router(teach_router)
 

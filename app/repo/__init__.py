@@ -6,3 +6,4 @@ from .lecture_repo import LectureRepo
 from .warning_repo import WarningRepo
 from .schedule_repo import ScheduleRepo
 from .take_repo import TakeRepo
+from .teach_repo import TeachRepo

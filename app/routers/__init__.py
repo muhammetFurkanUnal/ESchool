@@ -7,3 +7,4 @@ from .lecture_router import lecture_router
 from .warning_router import warning_router
 from .schedule_router import schedule_router
 from .take_router import take_router
+from .teach_router import teach_router

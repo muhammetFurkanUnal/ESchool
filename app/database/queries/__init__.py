@@ -6,3 +6,4 @@ from .lecture_queries import LectureQueries
 from .warning_queries import WarningQueries
 from .schedule_queries import ScheduleQueries
 from .take_queries import TakeQueries
+from .teach_queries import TeachQueries
