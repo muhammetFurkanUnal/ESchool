@@ -6,6 +6,7 @@ from ..models.model_utils import *
 class StudentRepo:
     def __init__(self):
         self.db = db
+        
 
     def get_all_students(self):
         query = StudentQueries.get_all()

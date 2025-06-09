@@ -22,8 +22,8 @@ class StudentService:
         return student
 
     # to be fixed
-    def update_student(self, student_data, student_id):
-        updated_student = self.student_repo.update_student(student_data, student_id)
+    def update_student(self, student_data, account_id):
+        updated_student = self.student_repo.update_student(student_data, account_id)
         return updated_student
 
     def delete_student(self, student_data):
