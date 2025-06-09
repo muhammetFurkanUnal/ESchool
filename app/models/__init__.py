@@ -7,3 +7,4 @@ from .administrator_model import *
 from .lecture_model import *
 from .warning_model import *
 from .schedule_model import *
+from .take_model import *
