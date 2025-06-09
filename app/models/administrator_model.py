@@ -6,7 +6,6 @@ class Administrator(BaseModel):
     username: str
     
     
-    
 class CreateAdministratorRequest(BaseModel):
     password: str
     username: str
@@ -15,7 +14,6 @@ class CreateAdministratorRequest(BaseModel):
 class UpdateAdministratorRequest(BaseModel):
     password: str
     username: str
-    
     
     
 class DeleteAdministratorRequest(BaseModel):
