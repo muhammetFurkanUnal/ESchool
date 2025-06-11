@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
+from typing import Any
 
 class AccountType(str, Enum):
     student = "student"
@@ -17,4 +18,5 @@ class GetAuthRequest(BaseModel):
 class AuthSuccessResponse(BaseModel):
     message: str
     token: str
+    account: Any
     

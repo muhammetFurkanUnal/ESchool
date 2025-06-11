@@ -7,11 +7,21 @@ class StudentQueries:
         return "SELECT * FROM Student"  
     
     def get_by_account_id(id: int):
-        return f"SELECT * FROM Student WHERE account_id={id}"
+        return f"""
+                SELECT s.*, d.dept_name
+                FROM Student s
+                LEFT JOIN Department d ON s.department_id = d.department_id
+                WHERE s.account_id = {id}
+                """
     
     
     def get_by_username(username: str):
-        return f"SELECT * FROM Student WHERE username='{username}'"
+        return f"""
+                SELECT s.*, d.dept_name
+                FROM Student s
+                LEFT JOIN Department d ON s.department_id = d.department_id
+                WHERE s.username = '{username}'
+                """
     
     # def get_by_student_id(id: int):
     #     return f"SELECT * FROM Student WHERE student_id={id}"
@@ -46,3 +56,17 @@ class StudentQueries:
                 WHERE account_id = {student.account_id};
     
                 """
+
+    def get_student_lectures(student_id: int):
+        """Get all lectures for a student with grades"""
+        
+        return f"""
+              SELECT t.student_id, l.lecture_id, l.lecture_name, d.dept_name, t.pass_grade,
+                    te.username as teacher_name
+              FROM take t
+              JOIN Lecture l ON t.lecture_id = l.lecture_id
+              JOIN Department d ON l.department_id = d.department_id
+              LEFT JOIN teach th ON l.lecture_id = th.lecture_id
+              LEFT JOIN Teacher te ON th.teacher_id = te.account_id
+              WHERE t.student_id = {student_id}
+              """

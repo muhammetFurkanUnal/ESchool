@@ -9,6 +9,10 @@ class AdministratorService:
     def get_administrator_by_account_id(self, account_id):
         administrator = self.administrator_repo.get_administrator_by_account_id(account_id)
         return administrator
+    
+    def get_administrator_by_username(self, username):
+        administrator = self.administrator_repo.get_administrator_by_username(username)
+        return administrator
 
     def get_all_administrators(self):
         administrators = self.administrator_repo.get_all_administrators()

@@ -28,7 +28,8 @@ def get_student_by_account_id(id, user=Depends(verify_token)):
         message="Get student by id successful!",
         model=response
     )
-
+    
+  
 
 # @student_router.get("/student/{id}")
 # def get_student_by_student_id(id):
@@ -71,3 +72,20 @@ def delete_student(
         message="Student deleted successfully!",
         model=student
     )
+
+
+@student_router.get("/student/{id}/lectures", response_model=GetSuccessResposne)
+def get_student_lectures(id, user=Depends(verify_token)):
+    response = student_service.get_student_lectures(id)
+    
+    if response == None:
+        raise HTTPException(status_code=404, detail="Lectures not found for this student")
+    
+    return GetSuccessResposne(
+        message="Get student lectures successful!",
+        model=response
+    )
+    
+    
+    
+    

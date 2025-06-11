@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from ..models.auth_model import *
-from ..services import AuthService
+from ..services import AuthService, AccountService
 
 auth_service = AuthService()
+account_service = AccountService()
 
 auth_router = APIRouter(prefix="/api")
 
@@ -15,8 +16,16 @@ def authenticate(auth_request: GetAuthRequest):
     
     token = auth_service.authenticate_user(auth_request)
     
+    account = account_service.get_account_by_username(
+        username=auth_request.username, 
+        account_type=auth_request.account_type
+    )
+    
     return AuthSuccessResponse(
         message="Authentication successful",
-        token=token
+        token=token,
+        account=account
     )
+    
+    
     

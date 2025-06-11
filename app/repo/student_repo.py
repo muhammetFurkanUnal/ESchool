@@ -33,7 +33,7 @@ class StudentRepo:
     def get_student_by_username(self, username):
         query = StudentQueries.get_by_username(username)
         student_raw = db.execute_query(query)
-        if (len(student_raw) == 0):
+        if len(student_raw) == 0:
             return None
         
         student = raw_to_model(student_raw, Student)[0]
@@ -66,3 +66,15 @@ class StudentRepo:
         query = StudentQueries.delete_student(model)
         db.execute_query(query)
         return student
+    
+    
+    def get_student_lectures(self, student_id: int):
+        query = StudentQueries.get_student_lectures(student_id)
+        lectures_raw = db.execute_query(query)
+      
+        
+        if (len(lectures_raw) == 0):
+            return None
+        
+        lectures = raw_to_model(lectures_raw, StudentLectures)
+        return lectures

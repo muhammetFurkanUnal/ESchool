@@ -10,6 +10,10 @@ class StudentService:
         student = self.student_repo.get_student_by_account_id(student_id)
         return student
     
+    def get_student_by_username(self, username):
+        student = self.student_repo.get_student_by_username(username)
+        return student
+    
     # def get_student_by_student_id(self, student_id):
     #     student = self.student_repo.get_student_by_student_id(student_id)
     #     return student
@@ -31,3 +35,8 @@ class StudentService:
     def delete_student(self, student_data):
         student = self.student_repo.delete_student(student_data)
         return student
+    
+    
+    def get_student_lectures(self, student_id):
+        lectures = self.student_repo.get_student_lectures(student_id)
+        return lectures

@@ -24,7 +24,6 @@ class TeacherRepo:
         query = TeacherQueries.get_by_account_id(account_id)
         teacher_raw = db.execute_query(query)
         
-        print(teacher_raw)
         
         if len(teacher_raw) == 0:
             return None
@@ -62,3 +61,32 @@ class TeacherRepo:
         query = TeacherQueries.delete_teacher(model)
         db.execute_query(query)
         return teacher
+    
+    
+    def get_teacher_lectures(self, account_id):
+        teacher_lectures_query = TeacherQueries.get_teacher_lectures(account_id)
+        teacher_lectures_raw = db.execute_query(teacher_lectures_query)
+        print("teacher lectures raw: ", teacher_lectures_raw)
+        if len(teacher_lectures_raw) == 0:
+            return None
+        teacher_lectures = raw_to_model(teacher_lectures_raw, TeacherLecturesResponse)
+        return teacher_lectures
+    
+    
+    def get_lecture_students(self, lecture_id):
+        lecture_students_query = TeacherQueries.get_lecture_students(lecture_id)
+        lecture_students_raw = db.execute_query(lecture_students_query)
+        
+        print("lecture students raw: ", lecture_students_raw)
+        
+        if len(lecture_students_raw) == 0:
+            return None
+        
+        lecture_students = raw_to_model(lecture_students_raw, LectureStudentsResponse)
+        return lecture_students
+    
+    
+    def update_student_grade(self, account_id, lecture_id, pass_grade):
+        query = TeacherQueries.update_student_grade(account_id, lecture_id, pass_grade)
+        db.execute_query(query)
+        return 

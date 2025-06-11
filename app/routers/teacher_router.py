@@ -65,3 +65,44 @@ def delete_teacher(
         message="Teacher deleted successfully!",
         model=teacher
     )
+    
+    
+@teacher_router.get("/teacher/{id}/lectures", response_model=GetSuccessResposne)
+def get_teacher_lectures(id):
+    lectures = teacher_service.get_teacher_lectures(id)
+    
+    if lectures is None:
+        raise HTTPException(status_code=404, detail="Lectures not found for this teacher")
+    
+    return GetSuccessResposne(
+        message="Get teacher lectures successful!",
+        model=lectures
+    )
+    
+    
+@teacher_router.get("/lecture/{id}/students", response_model=GetSuccessResposne)
+def get_lecture_students(id, user=Depends(require_role([AccountType.teacher, AccountType.administrator]))):
+    students = teacher_service.get_lecture_students(id)
+    
+    if students is None:
+        raise HTTPException(status_code=404, detail="Students not found for this lecture")
+    
+    return GetSuccessResposne(
+        message="Get lecture students successful!",
+        model=students
+    )
+    
+    
+@teacher_router.put("/student/{account_id}/lecture/{lecture_id}/grade", response_model=UpdateSuccessResponse)
+def update_student_grade(
+        lecture_id: int,
+        account_id: int,
+        request: UpdateStudentGradeRequest,
+        user=Depends(require_role([AccountType.teacher, AccountType.administrator]))
+    ):
+    
+    teacher_service.update_student_grade(account_id, lecture_id, request.pass_grade)
+    return UpdateSuccessResponse(
+        message="Student grade updated successfully!",
+        model=None
+    )

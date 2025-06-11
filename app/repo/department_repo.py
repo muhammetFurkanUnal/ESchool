@@ -11,7 +11,6 @@ class DepartmentRepo:
         query = DepartmentQueries.get_all()
         departments_raw = db.execute_query(query)
         
-        print(departments_raw)
         
         if len(departments_raw) == 0:
             return None
