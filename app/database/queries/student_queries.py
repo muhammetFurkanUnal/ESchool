@@ -70,3 +70,7 @@ class StudentQueries:
               LEFT JOIN Teacher te ON th.teacher_id = te.account_id
               WHERE t.student_id = {student_id}
               """
+              
+              
+    def update_student_grade(account_id: int, lecture_id: int, grade: float):
+        return f"UPDATE take SET pass_grade = {grade} WHERE student_id = {account_id} AND lecture_id = {lecture_id}"

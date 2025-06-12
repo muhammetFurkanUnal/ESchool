@@ -33,3 +33,6 @@ class ScheduleQueries:
                 DELETE FROM Schedule
                 WHERE schedule_id = {schedule.schedule_id};
                 """
+
+
+    

@@ -30,3 +30,23 @@ class LectureQueries:
                 DELETE FROM Lecture
                 WHERE lecture_id = {lecture.lecture_id};
                 """
+                
+                
+    def get_lecture_students(lecture_id: int):
+        return f"""
+                SELECT s.username, t.pass_grade, d.dept_name
+                FROM take t
+                JOIN Student s ON t.student_id = s.account_id
+                LEFT JOIN Department d ON s.department_id = d.department_id
+                WHERE t.lecture_id = {lecture_id}
+                """
+                
+                
+    def get_all_lectures():
+        """Get all lectures with department info"""
+        return """
+                SELECT l.lecture_id, l.lecture_name, d.dept_name
+                FROM Lecture l
+                JOIN Department d ON l.department_id = d.department_id
+                ORDER BY l.lecture_name
+                """

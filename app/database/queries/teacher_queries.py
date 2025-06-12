@@ -63,3 +63,13 @@ class TeacherQueries:
                 
     def update_student_grade(account_id: int, lecture_id: int, grade: float):
         return f"UPDATE take SET pass_grade = {grade} WHERE student_id = {account_id} AND lecture_id = {lecture_id}"
+    
+    
+    def get_all_lectures():
+        """Get all lectures with department info"""
+        return """
+                SELECT l.lecture_id, l.lecture_name, d.dept_name
+                FROM Lecture l
+                JOIN Department d ON l.department_id = d.department_id
+                ORDER BY l.lecture_name
+                """
